@@ -1,0 +1,30 @@
+apiVersion: networking.k8s.io/v1
+kind: IngressClass
+metadata:
+  name: wp-ink
+
+spec:
+  controller: nginx.org/ingress-controller
+
+---
+#用 kubectl create 命令生成 Ingress 的样板文件，指定域名是“wp.test”，
+#后端 Service 是“wp-svc:80”，Ingress Class 就是刚定义的“wp-ink”：
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: wp-ing
+
+spec:
+  ingressClassName: wp-ink
+
+  rules:
+  - host: wp.test
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: wp-svc
+            port:
+              number: 80
