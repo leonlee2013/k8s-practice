@@ -1,6 +1,9 @@
 
 #  docker run -d -p 5000:5000 registry
 #  docker-compose -f reg-compose.yml up -d
+#  docker-compose -f reg-compose.yml ps
+#  docker-compose -f reg-compose.yml down
+version: '3'
 services:
   registry:
     image: registry
