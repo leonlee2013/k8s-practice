@@ -2,7 +2,7 @@
 #  docker-compose -f wp-compose.yml up -d
 #  docker-compose -f wp-compose.yml ps
 #  docker-compose exec 来进入容器内部
-#  docker-compose -f wp-compose.yml exec -it nginx sh
+#  docker-compose -f wp-compose.yml exec nginx sh
 #  docker-compose -f wp-compose.yml down#  docker-compose -f reg-compose.yml ps
 
 version: '3'
