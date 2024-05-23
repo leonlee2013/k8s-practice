@@ -1,0 +1,26 @@
+
+#  docker run -d -p 5000:5000 registry
+#  docker-compose -f reg-compose.yml up -d
+services:
+  registry:
+    image: registry
+    container_name: registry
+    restart: always
+    ports:
+      - 5000:5000
+#Kubernetes 对比一下，跟Pod 定义非常像，
+#“services”相当于 Pod，
+#“service”就相当于“spec.containers”
+
+
+#apiVersion: v1
+#kind: Pod
+#metadata:
+#  name: ngx-pod
+#spec:
+#  restartPolicy: Always
+#  containers:
+#    - image: nginx:alpine
+#      name: ngx
+#      ports:
+#        - containerPort: 80
