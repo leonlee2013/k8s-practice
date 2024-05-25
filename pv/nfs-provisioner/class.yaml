@@ -1,0 +1,21 @@
+#  NFS 默认的 StorageClass 定义：
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: nfs-client
+provisioner: k8s-sigs.io/nfs-subdir-external-provisioner # or choose another name, must match deployment's env PROVISIONER_NAME'
+parameters:
+  archiveOnDelete: "false"
+
+
+#根据自需求，任意定制具有不同存储特性的 StorageClass，比如添加字段 onDelete: "retain" 暂时保留分配的存储，之后再手动删除
+#apiVersion: storage.k8s.io/v1
+#kind: StorageClass
+#metadata:
+#  name: nfs-client-retained
+#
+#provisioner: k8s-sigs.io/nfs-subdir-external-provisioner
+#parameters:
+#  onDelete: "retain"
+
+
