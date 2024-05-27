@@ -35,9 +35,9 @@ spec:
             - name: NFS_SERVER
               value: 10.3.31.171
             - name: NFS_PATH
-              value: /tmp/nfs
+              value: /nfstest/nfs
       volumes:
         - name: nfs-client-root
           nfs:
             server: 10.3.31.171
-            path: /tmp/nfs
+            path: /nfstest/nfs

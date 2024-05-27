@@ -10,4 +10,4 @@ spec:
   capacity:
     storage: 10Mi
   hostPath:
-    path: /tmp/host-10m-pv/
+    path: /host-pv-test/host-10m-pv/
