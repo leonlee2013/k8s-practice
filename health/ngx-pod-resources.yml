@@ -1,0 +1,23 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: ngx-pod
+  labels:
+    env: demo
+    owner: ly
+
+spec:
+  containers:
+  - image: nginx:alpine
+    name: ngx
+    ports:
+    - containerPort: 80
+    resources:
+      requests:
+        cpu: 10m
+#        cpu: 32
+        memory: 100Mi
+      limits:
+        cpu: 20m
+#        cpu: 32
+        memory: 200Mi
