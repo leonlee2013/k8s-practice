@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ngx-dep
+  annotations:
+    kubernetes.io/change-cause: v1, ngx=1.21
+
+spec:
+  replicas: 4
+  selector:
+    matchLabels:
+      app: ngx-dep
+
+  template:
+    metadata:
+      labels:
+        app: ngx-dep
+    spec:
+
+      containers:
+      - image: nginx:1.21-alpine
+        name: nginx
+        ports:
+        - containerPort: 80
+        volumeMounts:
+        - name: ngx-conf-vol
+          mountPath: /etc/nginx/conf.d
+      volumes:
+        - name: ngx-conf-vol
+          configMap:
+            name: ngx-conf
+            items: #路径映射，不配置则默认映射(key->key)
+              - key: default.conf
+                path: default.conf
+#              - key: default2 #别名
+#                path: def2222
+#              - key: default2
+#                path: def33333
+
