@@ -1,0 +1,31 @@
+apiVersion: autoscaling/v1
+kind: HorizontalPodAutoscaler
+metadata:
+  name: ngx-hpa
+
+spec:
+  maxReplicas: 10
+  minReplicas: 2
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: ngx-hpa-dep
+  targetCPUUtilizationPercentage: 5
+
+#  export out="--dry-run=client -o yaml"              # 定义Shell变量
+#  kubectl autoscale deploy ngx-hpa-dep --min=2 --max=10 --cpu-percent=5 $out
+
+#  它有三个参数：
+#  * min，Pod 数量的最小值，也就是缩容的下限。
+#  * max，Pod 数量的最大值，也就是扩容的上限。
+#  * cpu-percent，CPU 使用率指标，当大于这个值时扩容，小于这个值时缩容。
+
+
+#测试
+#  kubectl get deploy ngx-hpa-dep
+#  kubectl get hpa -w
+#  kubectl run test -it --image=httpd:alpine -- sh
+#  ab -c 10 -t 60 -n 1000000 'http://ngx-hpa-svc/'
+
+#  发现目标的 CPU 使用率超过了预定的 5% 后，就会以 2 的倍数开始扩容，一直到数量上限，然后持续监控一段时间，
+#  如果 CPU 使用率回落，就会再缩容到最小值。
