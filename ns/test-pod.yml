@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: ngx
+  namespace: test-ns
+
+spec:
+  containers:
+    - image: nginx:alpine
+      name: ngx

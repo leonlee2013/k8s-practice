@@ -1,0 +1,47 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: dev-ns
+---
+
+apiVersion: v1
+kind: ResourceQuota
+metadata:
+  name: dev-qt
+  namespace: dev-ns
+
+spec:
+  hard: #硬性全局限制
+    requests.cpu: 10
+    requests.memory: 10Gi
+    limits.cpu: 10
+    limits.memory: 20Gi
+
+    requests.storage: 100Gi
+    persistentvolumeclaims: 100
+
+    pods: 100
+    configmaps: 100
+    secrets: 100
+    services: 10
+
+    count/jobs.batch: 1
+    count/cronjobs.batch: 1
+    count/deployments.apps: 1
+
+
+#    * CPU 和内存配额，使用 request.*、limits.*，这是和容器资源限制是一样的。
+#    * 存储容量配额，使 requests.storage 限制的是 PVC 的存储总量，也可以用 persistentvolumeclaims 限制 PVC 的个数。
+#    * 核心对象配额，使用对象的名字（英语复数形式），比如 pods、configmaps、secrets、services。
+#    * 其他 API 对象配额，使用 count/name.group 的形式，比如 count/jobs.batch、count/deployments.apps。
+
+#  稍微解释一下它为名字空间加上的全局资源配额：
+#  * 所有 Pod 的需求总量最多是 10 个 CPU 和 10GB 的内存，上限总量是 10 个 CPU 和 20GB 的内存。
+#  * 只能创建 100 个 PVC 对象，使用 100GB 的持久化存储空间。
+#  * 只能创建 100 个 Pod，100 个 ConfigMap，100 个 Secret，10 个 Service。
+#  * 只能创建 1 个 Job，1 个 CronJob，1 个 Deployment。
+
+
+#  kubectl apply -f quota-ns.yml
+#  kubectl get quota -n dev-ns
+#  kubectl describe quota -n dev-ns
