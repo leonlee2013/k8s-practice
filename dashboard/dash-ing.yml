@@ -1,0 +1,32 @@
+
+#  因为是 HTTPS 协议，所以我们要在 Ingress 里多加一点东西，一个是“annotations”字段，指定后端目标是 HTTPS 服务，
+#  另一个是“tls”字段，指定域名和证书
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+
+metadata:
+  name: dash-ing
+  namespace: kubernetes-dashboard
+  annotations:
+    nginx.org/ssl-services: "kubernetes-dashboard"
+
+spec:
+  ingressClassName: dash-ink
+
+  tls:
+    - hosts:
+        - k8s.test
+      secretName: dash-tls
+
+  rules:
+    - host: k8s.test
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: kubernetes-dashboard
+                port:
+                  number: 443
+
