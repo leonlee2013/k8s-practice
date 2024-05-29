@@ -1,3 +1,4 @@
+#  https://github.com/nginxinc/kubernetes-ingress/blob/main/deployments/deployment/nginx-ingress.yaml
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -87,6 +88,7 @@ spec:
             fieldRef:
               fieldPath: metadata.name
         args:
+          # 前面创建的 Ingress Class 的名字，这是让 Ingress Controller 管理 Ingress 的关键
           - -ingress-class=ngx-ink
          # - -nginx-configmaps=nginx-ingress/nginx-config
          # - -default-server-tls-secret=nginx-ingress/default-server-secret
