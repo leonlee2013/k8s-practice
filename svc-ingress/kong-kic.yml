@@ -1,23 +1,20 @@
+
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   labels:
-    app: ingress-kong
-  name: ingress-kong
+    app: ingress-kong-dep
+  name: ingress-kong-dep
   namespace: kong
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: ingress-kong
+      app: ingress-kong-dep
   template:
     metadata:
-      annotations:
-        kuma.io/gateway: enabled
-        kuma.io/service-account-token-volume: kong-serviceaccount-token
-        traffic.sidecar.istio.io/includeInboundPorts: ""
       labels:
-        app: ingress-kong
+        app: ingress-kong-dep
     spec:
       automountServiceAccountToken: false
       containers:
@@ -43,8 +40,9 @@ spec:
             - name: KONG_PROXY_ERROR_LOG
               value: /dev/stderr
             - name: KONG_ROUTER_FLAVOR
-              value: traditional
-          image: kong:3.0
+              value: traditional_compatible
+              #value: traditional
+          image: kong:3.1
           lifecycle:
             preStop:
               exec:
@@ -84,12 +82,16 @@ spec:
             successThreshold: 1
             timeoutSeconds: 1
         - env:
+            # add IngressClass here!
+            - name: CONTROLLER_INGRESS_CLASS
+              value: kong-ink
+
             - name: CONTROLLER_KONG_ADMIN_URL
               value: https://127.0.0.1:8444
             - name: CONTROLLER_KONG_ADMIN_TLS_SKIP_VERIFY
               value: "true"
             - name: CONTROLLER_PUBLISH_SERVICE
-              value: kong/kong-proxy
+              value: kong/ingress-kong-svc
             - name: POD_NAME
               valueFrom:
                 fieldRef:
@@ -146,14 +148,13 @@ spec:
               - key: namespace
                 path: namespace
             secretName: kong-serviceaccount-token
+
 ---
+
 apiVersion: v1
 kind: Service
 metadata:
-  annotations:
-    service.beta.kubernetes.io/aws-load-balancer-backend-protocol: tcp
-    service.beta.kubernetes.io/aws-load-balancer-type: nlb
-  name: kong-proxy
+  name: ingress-kong-svc
   namespace: kong
 spec:
   ports:
@@ -166,5 +167,7 @@ spec:
       protocol: TCP
       targetPort: 8443
   selector:
-    app: ingress-kong
-  type: LoadBalancer
+    app: ingress-kong-dep
+  type: NodePort
+
+

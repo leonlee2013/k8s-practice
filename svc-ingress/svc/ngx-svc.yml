@@ -5,7 +5,7 @@ metadata:
   name: ngx-svc
 
 spec:
-  type: NodePort
+#  type: NodePort
   selector:
     app: ngx-dep
 

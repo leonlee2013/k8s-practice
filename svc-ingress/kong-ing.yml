@@ -1,7 +1,14 @@
+#  kubectl create ing kong-ing --rule="kong.test/=ngx-svc:80" --class=kong-ink $out
+
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: kong-ing
+  annotations:
+    konghq.com/host-aliases: "kong.dev, kong.ops, abc.*"  #注意这里
+    konghq.com/plugins: |
+      kong-add-resp-header-plugin,
+      kong-rate-limiting-plugin
 
 spec:
   ingressClassName: kong-ink
@@ -17,3 +24,4 @@ spec:
                 name: ngx-svc
                 port:
                   number: 80
+
