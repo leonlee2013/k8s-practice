@@ -13,6 +13,7 @@ kubectl -n kubernetes-dashboard port-forward --address 10.3.31.213 svc/kubernete
 kubectl apply -f admin-user.yaml
 #拷贝 token
 kubectl -n kubernetes-dashboard describe secret $(kubectl -n kubernetes-dashboard get secret | grep admin-user | awk '{print $1}')
+
 https://10.3.31.213:8443
 ```
 
