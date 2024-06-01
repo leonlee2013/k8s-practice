@@ -48,3 +48,6 @@ Kubernetes 管理集群进出流量的工具：Kong Ingress Controller:
 * Kong Ingress Controller 的底层内核仍然是 Nginx，但基于 OpenResty 和 LuaJIT，实现了对路由的完全动态管理，不需要 reload。
 * 使用“无数据库”的方式可以非常简单地安装 Kong Ingress Controller，它是一个由两个容器组成的 Pod。
 * Kong Ingress Controller 支持标准的 Ingress 资源，但还使用了 annotation 和 CRD 提供更多的扩展增强功能，特别是插件，可以灵活地加载或者拆卸，实现复杂的流量管理策略。
+
+https://www.qikqiak.com/post/visually-explained-k8s-ingress/
+图解 Kubernetes Ingress

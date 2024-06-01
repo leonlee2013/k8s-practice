@@ -34,8 +34,6 @@ openssl req -x509 -days 365 -out k8s.test.crt -keyout k8s.test.key \
 生成的是一个 X509 格式的证书，有效期 365 天，私钥是 RSA2048 位，摘要算法是 SHA256，签发的网站是“k8s.test”。
 运行命令行后会生成两个文件，一个是证书“k8s.test.crt”，另一个是私钥“k8s.test.key”，我们需要把这两个文件存入 Kubernetes 里供 Ingress 使用
 ```bash
-
-
 kubectl create secret tls dash-tls -n kubernetes-dashboard --cert=k8s.test.crt --key=k8s.test.key --dry-run=client -o yaml  > cert.yml
 kubectl create ing dash-ing --rule="k8s.test/=kubernetes-dashboard:443" --class=dash-ink -n kubernetes-dashboard --dry-run=client -o yaml
 kubectl get ingressclasses  -n  kubernets-dashboard
